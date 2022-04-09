@@ -1,0 +1,18 @@
+h1, h2, h3, h4, h5, h6{
+    text-align: center;
+    color: white;
+}
+body {
+    font-family: "Times New Roman";
+    color: LightCyan;
+    background-color: white; 
+    background-image: url("https://wallpaperbat.com/img/142101-hd-wallpaper-amoled-dark-vertical.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center; 
+    background-size: cover;
+}
+a {
+    color: rgb(0, 248, 194);
+}
+   
