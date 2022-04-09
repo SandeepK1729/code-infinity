@@ -2,6 +2,9 @@ h1, h2, h3, h4, h5, h6{
     text-align: center;
     color: white;
 }
+script {
+    width: 50%;
+}
 body {
     font-family: "Times New Roman";
     color: LightCyan;

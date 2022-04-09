@@ -10,8 +10,8 @@ linked in : https://www.linkedin.com/in/sandeep-konda-141225205
  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTCmqtDPt4ex5KQE_ADovzLu4bctV3w4aVAQbnu7vpx9afAmd6HB8XX6yF-&s=10">-->
 	<h1>DS Lab</h1>
     {% for record in records %}
-        <p>{% record["name"] %}</p>
-        <script src={% record["link"] %} type="text/javascript" ></script>
+        <p>{{ record["name"] }}</p>
+        <script src={{ "https://ideone.com/e.js/" + record["link"] }} type="text/javascript" ></script>
     {% endfor %}
     
     

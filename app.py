@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect
+from csv import DictReader
 
 app = Flask(__name__)
 
@@ -11,6 +12,6 @@ def index():
 def login():
     return render_template("login.html")
 
-@app.route("/dslab")
+@app.route("/dslab", methods = ["GET", "POST"])
 def dslab():
     return render_template("dslab.html", records = DictReader(open("files/dslab.csv")))
