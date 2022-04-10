@@ -65,3 +65,8 @@ span.psw {
      width: 100%;
   }
 }
+
+#error {
+  text-align : center;
+  color: #f72626;
+}

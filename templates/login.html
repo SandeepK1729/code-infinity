@@ -5,21 +5,27 @@
     <title>Login</title> 
 {% endblock %}
 
+{% block style %} 
+
+{% endblock %} 
+
 {% block body %} 
 <h2>Login Form</h2>
 
-<form action="/action_page.php" method="post">
-  <div class="imgcontainer">
-    <img src="static/style/avatar.png" alt="Avatar" class="avatar">
-  </div>
+<form action="/login" method="post">
+    <div class="imgcontainer">
+        <img src="static/style/avatar.png" alt="Avatar" class="avatar">
+    </div>
 
   <div class="container">
     <label for="name"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="name" required>
+    <input type="text" placeholder="Enter Username" name="name" required autofocus>
 
     <label for="pwd"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="pwd" required>
-        
+    <input type="password" placeholder="Enter Password" name="pwd" required autofocus autocomplete="off">
+    
+    <p id="error"> {{ message }}</p>
+
     <button type="submit">Login</button>
     <label>
       <input type="checkbox" checked="checked" name="remember"> Remember me
