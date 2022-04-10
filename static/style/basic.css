@@ -18,4 +18,14 @@ body {
 a {
     color: rgb(0, 248, 194);
 }
-   
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+  }
