@@ -65,7 +65,7 @@ class Record:
 
         cur.execute("delete from data;")
 
-        with open("data.csv") as file:
+        with open("files/data.csv") as file:
             records = DictReader(file)
             for record in records:
                 cur.execute("insert into data values('{name}', '{mail}', '{username}', '{pwd}', '{permission}');".format(name = record["name"], mail = record["mail"], username = record["username"], pwd = record["pwd"], permission = record["permission"]))
@@ -114,7 +114,7 @@ class Record:
 
         con.commit()
         con.close()
-    def relay():
+    def relay(self):
         con = connect(
             host="ec2-54-157-79-121.compute-1.amazonaws.com",
             database="d8cd5g0t4s4asi",

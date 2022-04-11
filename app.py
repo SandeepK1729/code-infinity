@@ -10,8 +10,8 @@ is_valid = False
 
 @app.route("/")
 def index():
-    if datetime.now().strftime("%H") == "23":
-        Record.relay()
+    # if datetime.now().strftime("%H") == "23":
+      #  Record("","").relay()
     if not is_valid:
         return redirect("/login")
         
