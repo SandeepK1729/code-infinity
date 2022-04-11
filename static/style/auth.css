@@ -6,6 +6,40 @@ form {
     margin: 3%;
 }
 
+* {box-sizing: border-box}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 25px;
+}
+
+.registerbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+.registerbtn:hover {
+  opacity:1;
+}
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  background-color: #f1f1f1;
+  text-align: center;
+}
 h1, h2, h3, h4, h5, h6 { text-align: center ; }
 input[type=text], input[type=password] {
   width: 100%;

@@ -18,8 +18,8 @@
     </div>
 
   <div class="container">
-    <label for="name"><b>Username</b></label>
-    <input type="text" placeholder="Enter Username" name="name" required autofocus >
+    <label for="username"><b>Username</b></label>
+    <input type="text" placeholder="Enter Username" name="username" required autofocus >
 
     <label for="pwd"><b>Password</b></label>
     <input type="password" placeholder="Enter Password" name="pwd" required autofocus autocomplete="off">
@@ -33,8 +33,10 @@
   </div>
 
   <div class="container" style="background-color:#f1f1f1">
-    <button type="button" class="cancelbtn">Cancel</button>
-    <span class="pwd">Forgot <a href="#">password?</a></span>
+    <div class="container signin">
+        <p> Don't have accout ? <a href="/register">Register</a>.</p>
+        <span class="pwd">Forgot <a href="#">password?</a></span>
+      </div>
   </div>
 </form>
 {% endblock %}
