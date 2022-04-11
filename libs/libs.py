@@ -15,6 +15,7 @@ class Record:
         self.is_exist = True
     def validate(self):
         if self.username != "default" and self.pwd != "default":
+            
             self.is_auth_default = False
             con = connect(
                 host="ec2-54-157-79-121.compute-1.amazonaws.com",
@@ -27,6 +28,7 @@ class Record:
             # verification of credentials
             cur.execute(f"select username from data where username = '{self.username}' and pwd = '{self.pwd}';")
             if len(cur.fetchall()) != 0:
+                self.push()
                 cur.execute(f"select username from data where username = '{self.name}' and pwd = '{self.pwd}' and permission = 'allowed';")
                 if len(cur.fetchall()) != 0:
                     self.is_auth_valid = True
@@ -60,6 +62,8 @@ class Record:
             password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
         )
         cur = con.cursor()
+
+        cur.execute("delete from data;")
 
         with open("data.csv") as file:
             records = DictReader(file)
@@ -110,4 +114,16 @@ class Record:
 
         con.commit()
         con.close()
+    def relay():
+        con = connect(
+            host="ec2-54-157-79-121.compute-1.amazonaws.com",
+            database="d8cd5g0t4s4asi",
+            user="wcrrtujjtpxjwg",
+            password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
+        )
+        cur = con.cursor()
+        self.push()
+        cur.execute(f"delete from data where permission = 'denied'")
+
+        con.commit()
         

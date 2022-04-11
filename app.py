@@ -1,5 +1,4 @@
-from email import message
-from timeit import repeat
+from datetime import datetime
 from flask import Flask, render_template, redirect, request
 from libs.libs import *
 
@@ -11,7 +10,9 @@ is_valid = False
 
 @app.route("/")
 def index():
-    
+    print(datetime.now().strftime("%H"))
+    if datetime.now().strftime("%h") == "23":
+        Record.relay()
     if not is_valid:
         return redirect("/login")
         
