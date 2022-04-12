@@ -8,7 +8,7 @@ form {
 
 * {box-sizing: border-box}
 
-input[type=text]:focus, input[type=password]:focus {
+input[type=text]:focus, input[type=password]:focus, input[type=email]:focus {
   background-color: #ddd;
   outline: none;
 }
@@ -41,7 +41,7 @@ a {
   text-align: center;
 }
 h1, h2, h3, h4, h5, h6 { text-align: center ; }
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
