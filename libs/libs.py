@@ -114,7 +114,6 @@ class Record:
         )
         cur = con.cursor()
 
-        self.push()
         cur.execute(f"insert into data values('{self.name}', '{self.mail}', '{self.username}', '{self.pwd}', 'denied');")
         self.pull()
         self.is_auth_default = True
