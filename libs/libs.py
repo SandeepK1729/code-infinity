@@ -10,9 +10,10 @@ class Record:
         self.is_auth_valid = False
         self.is_auth_default = True
         self.login_message = ""
+        self.register_message = ""
         self.name = name
         self.mail = mail
-        self.is_exist = True
+        self.is_exist = False
     def validate(self):
         if self.username != "default" and self.pwd != "default":
             
@@ -28,14 +29,19 @@ class Record:
             # verification of credentials
             cur.execute(f"select username from data where username = '{self.username}' and pwd = '{self.pwd}';")
             if len(cur.fetchall()) != 0:
-                self.push()
-                cur.execute(f"select username from data where username = '{self.name}' and pwd = '{self.pwd}' and permission = 'allowed';")
+                # self.push()
+                self.is_exist = True
+                cur.execute(f"select username from data where username = '{self.username}' and pwd = '{self.pwd}' and permission = 'allowed';")
+                
                 if len(cur.fetchall()) != 0:
                     self.is_auth_valid = True
-                    self.is_exist = True
+                    self.register_message = "Account Credentials already exist, try to login"
                 else:
+                    self.register_message = "Account Credentials already exist, but Account not activated yet"
                     self.login_message = "Your Account not activated yet"
+                    
             else:
+                self.is_exist = False
                 self.login_message = "Invalid Credentials"
             
             # history
@@ -46,7 +52,6 @@ class Record:
             con.close()
         
         elif self.username != "default" or self.pwd != "default":
-            print(self.username, self.pwd)
             self.login_message = "Invalid Credentials"
 
         self.pull()
@@ -109,12 +114,17 @@ class Record:
         )
         cur = con.cursor()
 
+        self.push()
         cur.execute(f"insert into data values('{self.name}', '{self.mail}', '{self.username}', '{self.pwd}', 'denied');")
+        self.pull()
         self.is_auth_default = True
 
         con.commit()
         con.close()
-    def relay(self):
+    def relay(self, now = False):
+        if datetime.now().strftime("%H") != "23" and not now:
+            return ""
+    
         con = connect(
             host="ec2-54-157-79-121.compute-1.amazonaws.com",
             database="d8cd5g0t4s4asi",
@@ -122,8 +132,10 @@ class Record:
             password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
         )
         cur = con.cursor()
+
         self.push()
         cur.execute(f"delete from data where permission = 'denied'")
+        self.pull()
 
         con.commit()
         
