@@ -14,7 +14,7 @@ def index():
     if not is_valid:
         return redirect("/login")
         
-    return render_template("index.html")
+    return redirect("/homepage")
     
 
 @app.route("/login", methods = ["GET", "POST"])
@@ -38,6 +38,13 @@ def dslab():
         return redirect("/login")
     
     return render_template("dslab.html", records = DictReader(open("files/dslab.csv")))
+
+@app.route("/homepage")
+def homepage():
+    if not is_valid:
+        return redirect("/login")
+    
+    return render_template("index.html")
 
 @app.route("/register", methods = ["POST", "GET"])
 def register():
