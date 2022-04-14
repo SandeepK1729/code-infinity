@@ -2,6 +2,10 @@ from unicodedata import name
 from psycopg2 import *
 from csv import *
 from datetime import datetime
+from random import choices
+from string import ascii_letters, digits
+import smtplib
+
 
 class Record:
     def __init__(self, username, pwd, name = "", mail = "", ):
@@ -14,6 +18,8 @@ class Record:
         self.name = name
         self.mail = mail
         self.is_exist = False
+        self.from_mail = 'code.infinity.nocto@gmail.com'
+        self.from_mail_pwd = 'codeinfinity140422'
     def validate(self):
         if self.username != "default" and self.pwd != "default":
             
@@ -114,12 +120,82 @@ class Record:
         )
         cur = con.cursor()
 
+        # history
+        time_stamp = datetime.now().strftime("%H:%M:%S %d/%m/%y")
         cur.execute(f"insert into data values('{self.name}', '{self.mail}', '{self.username}', '{self.pwd}', 'denied');")
+        cur.execute(f"insert into history values('{self.username}','{self.pwd}', '{time_stamp}', 'ttr');")
+
+    
+
+        # verification
+        cur.execute("select code from verifier;")
+
+        codes = cur.fetchall()
+        # random hashcode generator 
+        code = ""
+        for i in range(8):
+            code += "".join(choices(ascii_letters + digits))
+
+        while code in codes:
+            code = ""
+            for i in range(8):
+                code += "".join(choices(ascii_letters + digits))
+            
+        cur.execute(f"insert into verifier values ( '{self.name}', '{self.mail}', '{code}');") 
+        self.verification_mail(self.name, self.mail, code)
+
         self.pull()
         self.is_auth_default = True
 
         con.commit()
         con.close()
+    def verification_mail(self, name, to_mail, code):
+        
+        email_text = f"""\
+        From: {self.from_mail}
+        To: {to_mail}, 
+        Subject: Code Infinity Account Activation
+        Hi {name},
+
+        We just need to verify your email address before you can access Code Infinity Portal.
+
+        Verify your email address, { "https://code-infinity.herokuapp.com/account-verification?code=" + code }
+
+        Best regards, The Code Infinity team
+        """
+
+        try:
+            smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)       # route
+            smtp_server.ehlo()                                          # connecting
+            smtp_server.login(self.from_mail , self.from_mail_pwd)      # login
+            smtp_server.sendmail(self.from_mail , to_mail, email_text)  # sending
+            smtp_server.close()                                         # close
+            print ("Email sent successfully!")
+        except Exception as ex:
+            print ("Something went wrong….",ex)
+    @staticmethod
+    def verify_mail(code):
+        con = connect(
+            host="ec2-54-157-79-121.compute-1.amazonaws.com",
+            database="d8cd5g0t4s4asi",
+            user="wcrrtujjtpxjwg",
+            password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
+        )
+        cur = con.cursor()
+
+        cur.execute(f"select name, mail from verifier where code = '{code}';")
+
+        data = cur.fetchall()
+        if len(data) == 0:
+            return False
+        
+        data = data[0]
+        
+        name, mail = data[0], data[1]
+        cur.execute(f"update data set permission = 'allowed' where name = '{name}' and mail = '{mail}';")
+        return True
+        
+    """ for automatic login route
     def relay(self, now = False):
         if datetime.now().strftime("%H") != "23" and not now:
             return ""
@@ -136,5 +212,5 @@ class Record:
         cur.execute(f"delete from data where permission = 'denied'")
         self.pull()
 
-        con.commit()
+        con.commit()"""
         
