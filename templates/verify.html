@@ -1,0 +1,19 @@
+{% extends "layout.html"%} 
+
+{% block head %} 
+    <link rel="stylesheet" href="static/style/auth.css">
+    <title>Account Verification</title>
+{% endblock %}
+
+{% block style %} 
+    body {
+        text-align: center;
+    }
+{% endblock %} 
+
+{% block body %} 
+    <h2>Code Infinity</h2>
+    <br><br>
+    <p> {{ message }} </p>
+    <p><a href = {{ link }} > {{ word }} </a></p>
+{% endblock %}
