@@ -40,9 +40,9 @@ def verification():
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     if session.get("name"):
-        if session["name"] == "newbie":
-            return render_template("login.html", message = "Activation link will be sent to your mail ID")
-        elif session["name"] == None:
+        # if session["name"] == "newbie":
+        #     return render_template("login.html", message = "Activation link will be sent to your mail ID")
+        if session["name"] == None:
             return render_template("login.html", message = "Your Logged out, login now")
         else:
             return redirect("/")
