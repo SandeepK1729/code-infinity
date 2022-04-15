@@ -152,13 +152,14 @@ class Record:
     def verification_mail(self, name, to_mail, code):
         to_mail = [to_mail]
         mail_subject = "Code Infinity Account Activation"
-        mail_body = f"""Hi {name},
+        mail_body = f"""
+Hi {name},
 
-        We just need to verify your email address before you can access Code Infinity Portal.
+We just need to verify your email address before you can access Code Infinity Portal.
 
-        Verify your email address, { "https://code-infinity.herokuapp.com/account-verification?code=" + code }
+Verify your email address, { "https://code-infinity.herokuapp.com/account-verification?code=" + code }
 
-        Best regards, The Code Infinity team
+Best regards, The Code Infinity team
         """
         email_text = """\
 From: %s
