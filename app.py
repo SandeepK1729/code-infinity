@@ -40,11 +40,13 @@ def verification():
 # login route
 @app.route("/login", methods = ["GET", "POST"])
 def login():
-    if session.get("name") and request.method == "GET":
+    if is_logged_in():
+        return redirect("/")
+    if request.method == "GET" and session.get("name"):
         if session["name"] == None:
             return render_template("login.html", message = "Your Logged out, login now")
-        else:
-            return redirect("/")
+        elif session["name"] == "newbie":
+            return render_template("login.html", messsage = "Account activation mail be send to mail ID")
 
     global username,pwd, is_valid
     username = request.form.get("username", "default")
