@@ -1,3 +1,4 @@
+import re
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 from libs.libs import *
@@ -39,9 +40,7 @@ def verification():
 # login route
 @app.route("/login", methods = ["GET", "POST"])
 def login():
-    if session.get("name"):
-        # if session["name"] == "newbie":
-        #     return render_template("login.html", message = "Activation link will be sent to your mail ID")
+    if session.get("name") and request.method == "GET":
         if session["name"] == None:
             return render_template("login.html", message = "Your Logged out, login now")
         else:
