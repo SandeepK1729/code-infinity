@@ -1,5 +1,6 @@
 from psycopg2 import *
 from libs.libs import Record
+from flask import session
 
 con = connect(
     host="ec2-54-157-79-121.compute-1.amazonaws.com",
@@ -21,6 +22,8 @@ for record in records:
         
     elif c == "N" or c == "NO":
         cur.execute(f"delete from data where name = '{record[0]}' and mail = '{record[1]}';")
+        # if session.get("name"):
+        #    session["name"] = None
 if len(records) == 0:
     print("no accounts for now")
 

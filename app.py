@@ -15,8 +15,9 @@ app.config["SESSION_TYPE"] = "filesystem"
 Session(app)
 
 def is_logged_in(): 
-    return session.get("name", "newbie") != "newbie"
+    user = session.get("name", "newbie")
     
+    return not (user == "newbie" or user == None)
 # mail control route
 @app.route("/")
 def index():
@@ -41,6 +42,8 @@ def login():
     if session.get("name"):
         if session["name"] == "newbie":
             return render_template("login.html", message = "Activation link will be sent to your mail ID")
+        elif session["name"] == None:
+            return render_template("login.html", message = "Your Logged out, login now")
         else:
             return redirect("/")
 
@@ -59,6 +62,7 @@ def login():
 @app.route("/logout")
 def logout():
     session["name"] = None
+    # print(session.get("name", "newbie"))
     return redirect("/")
 # DS route
 @app.route("/dslab", methods = ["GET", "POST"])
@@ -71,7 +75,7 @@ def dslab():
 # register route
 @app.route("/register", methods = ["POST", "GET"])
 def register():
-    if not is_logged_in():
+    if is_logged_in():
         return redirect("/")
 
     if request.method != "POST":

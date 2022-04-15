@@ -150,12 +150,9 @@ class Record:
         con.commit()
         con.close()
     def verification_mail(self, name, to_mail, code):
-        
-        email_text = f"""\
-        From: {self.from_mail}
-        To: {to_mail}, 
-        Subject: Code Infinity Account Activation
-        Hi {name},
+        to_mail = [to_mail]
+        mail_subject = "Code Infinity Account Activation"
+        mail_body = f"""Hi {name},
 
         We just need to verify your email address before you can access Code Infinity Portal.
 
@@ -163,7 +160,14 @@ class Record:
 
         Best regards, The Code Infinity team
         """
+        email_text = """\
+From: %s
+To: %s
+Subject: %s
 
+%s
+        """ % (self.from_mail, to_mail, mail_subject, mail_body)
+        
         try:
             smtp_server = smtplib.SMTP_SSL('smtp.gmail.com', 465)       # route
             smtp_server.ehlo()                                          # connecting
@@ -175,6 +179,7 @@ class Record:
             print ("Something went wrong….",ex)
     @staticmethod
     def verify_mail(code):
+        is_valid = True
         con = connect(
             host="ec2-54-157-79-121.compute-1.amazonaws.com",
             database="d8cd5g0t4s4asi",
@@ -187,14 +192,17 @@ class Record:
 
         data = cur.fetchall()
         if len(data) == 0:
+            con.close()
             return False
         
         data = data[0]
         
         name, mail = data[0], data[1]
         cur.execute(f"update data set permission = 'allowed' where name = '{name}' and mail = '{mail}';")
-        return True
         
+        con.commit()
+        con.close()
+        return True
     """ for automatic login route
     def relay(self, now = False):
         if datetime.now().strftime("%H") != "23" and not now:
