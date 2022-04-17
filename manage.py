@@ -2,12 +2,7 @@ from psycopg2 import *
 from libs.libs import Record
 from flask import session
 
-con = connect(
-    host="ec2-54-157-79-121.compute-1.amazonaws.com",
-    database="d8cd5g0t4s4asi",
-    user="wcrrtujjtpxjwg",
-    password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
-)
+con = Record.connect_to_db()
 cur = con.cursor()
 
 cur.execute("select * from data;")

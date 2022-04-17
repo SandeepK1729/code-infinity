@@ -1,5 +1,3 @@
-from email import message
-import re
 from flask import Flask, render_template, redirect, request, session
 from flask_session import Session
 from libs.libs import *
@@ -27,6 +25,11 @@ def index():
         return redirect("/login")
         
     return render_template("index.html")
+
+""" sc harsh l1
+@app.route("/harsh-L1")
+def harsh_L1():
+    render_"""
 
 # account verification route  
 @app.route("/account-verification", methods = ["GET"])
@@ -62,7 +65,7 @@ def login():
     rec = Record(username, pwd)
     is_valid = rec.validate()
     if is_valid:
-        session['name'] = name
+        session['name'] = username
         return redirect("/")
     return render_template("login.html", message = rec.login_message)
 

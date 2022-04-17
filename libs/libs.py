@@ -1,10 +1,12 @@
-from unicodedata import name
 from psycopg2 import *
 from csv import *
 from datetime import datetime
 from random import choices
 from string import ascii_letters, digits
 import smtplib
+from os import environ
+
+
 
 
 class Record:
@@ -18,18 +20,16 @@ class Record:
         self.name = name
         self.mail = mail
         self.is_exist = False
-        self.from_mail = 'code.infinity.nocto@gmail.com'
-        self.from_mail_pwd = 'codeinfinity140422'
+
+        self.from_mail = "code.infinity.nocto@gmail.com"
+        self.from_mail_pwd = "codeinfinity140422"
+        # self.from_mail = environ['CODE_INFINITY_MAIL_ID']
+        # self.from_mail_pwd = environ['CODE_INFINITY_PWD']
     def validate(self):
         if self.username != "default" and self.pwd != "default":
             
             self.is_auth_default = False
-            con = connect(
-                host="ec2-54-157-79-121.compute-1.amazonaws.com",
-                database="d8cd5g0t4s4asi",
-                user="wcrrtujjtpxjwg",
-                password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
-            )
+            con = self.connect_to_db()
             cur = con.cursor()
 
             # verification of credentials
@@ -66,12 +66,7 @@ class Record:
 
         return self.is_auth_valid
     def push(self):
-        con = connect(
-            host="ec2-54-157-79-121.compute-1.amazonaws.com",
-            database="d8cd5g0t4s4asi",
-            user="wcrrtujjtpxjwg",
-            password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
-        )
+        con = self.connect_to_db()
         cur = con.cursor()
 
         cur.execute("delete from data;")
@@ -84,12 +79,7 @@ class Record:
         con.commit()
         con.close()
     def pull(self):
-        con = connect(
-            host="ec2-54-157-79-121.compute-1.amazonaws.com",
-            database="d8cd5g0t4s4asi",
-            user="wcrrtujjtpxjwg",
-            password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
-        )
+        con = self.connect_to_db()
         cur = con.cursor()
 
         cur.execute("Select * from data;")
@@ -112,12 +102,7 @@ class Record:
         con.commit()
         con.close()
     def register_new(self):
-        con = connect(
-            host="ec2-54-157-79-121.compute-1.amazonaws.com",
-            database="d8cd5g0t4s4asi",
-            user="wcrrtujjtpxjwg",
-            password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
-        )
+        con = self.connect_to_db()
         cur = con.cursor()
 
         # history
@@ -179,14 +164,24 @@ Subject: %s
         except Exception as ex:
             print ("Something went wrong….",ex)
     @staticmethod
+    def connect_to_db():
+        """
+        return connect(
+            host = environ['HEROKU_POSTGRESQL_HOST'], 
+            database = environ['HEROKU_POSTGRESQL_DATABASE'],
+            user = environ['HEROKU_POSTGRESQL_USER'],
+            password = environ['HEROKU_POSTGRESQL_PWD']
+        )"""
+        return connect(
+            host = "ec2-54-157-79-121.compute-1.amazonaws.com", 
+            database = "d8cd5g0t4s4asi",
+            user = "wcrrtujjtpxjwg",
+            password = "21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
+        )
+    @staticmethod
     def verify_mail(code):
         is_valid = True
-        con = connect(
-            host="ec2-54-157-79-121.compute-1.amazonaws.com",
-            database="d8cd5g0t4s4asi",
-            user="wcrrtujjtpxjwg",
-            password="21dcc6fdae16a8b1243226940b05afb76613dc66c3b073ab78a1f206f4a39597"
-        )
+        con = Record.connect_to_db()
         cur = con.cursor()
 
         cur.execute(f"select name, mail from verifier where code = '{code}';")
