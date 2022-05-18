@@ -21,8 +21,6 @@ class Record:
         self.mail = mail
         self.is_exist = False
 
-        environ['CODE_INFINITY_MAIL_ID'] = "code.infinity.nocto@gmail.com"
-        environ['CODE_INFINITY_PWD'] = "codeinfinity140422"
         self.from_mail = environ['CODE_INFINITY_MAIL_ID']
         self.from_mail_pwd = environ['CODE_INFINITY_PWD']
     def validate(self):
